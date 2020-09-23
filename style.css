@@ -1,0 +1,19 @@
+body {
+    text-align: center;
+    background-color: lightyellow; 
+    font-family: Arial;
+}
+table {
+    border-collapse: collapse;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  
+  table, th, td {
+    border: 1px solid black;
+    padding: 5px;
+  }
+
+  td:nth-child(1) { background-color: lightslategrey; }

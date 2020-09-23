@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>NummodJS</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>NummodJS</h1>
+    <form>
+      <label for="fname">Input Data:</label><br>
+      <textarea rows="10" cols="30" name="comment" form="usrform" id="inputField">
+{"x":[-2,-1,0,1,2],
+"y":[
+[-15,0,0,0,0],
+[-4, 0,0,0,0],
+[-1, 0,0,0,0],
+[ 0, 0,0,0,0],
+[ 5, 0,0,0,0]]
+}
+      </textarea><br>
+      <input type="button" value="Calculating" id="calculate">
+    </form>
+    <div id="outputField"></div>
+    <script src="nummod.js"></script>
+  </body>
+</html>

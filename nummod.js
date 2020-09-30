@@ -98,6 +98,35 @@ function LXStringGenerator(datas, rountTo) {
 }
 
 /**
+ * Function to find the product term
+ * @param {*} i 
+ * @param {*} value 
+ * @param {*} x 
+ */
+function proterm(i, value, x) { 
+    var pro = 1; 
+    for (var j = 0; j < i; j++) { 
+        pro = pro * (value - x[j]); 
+    } 
+    return pro; 
+}
+
+/**
+ * Function for applying Newton's divided difference formula to the value.
+ * @param {*} value 
+ * @param {*} x 
+ * @param {*} y 
+ * @param {*} n 
+ */
+function applyFormula(value, x, y, n) { 
+  var sum = y[0][0]; 
+  for (var i = 1; i < n; i++) { 
+    sum = sum + (proterm(i, value, x) * y[0][i]); 
+  } 
+  return sum; 
+} 
+
+/**
  * The main caculation method. Call from the main button.
  */
 function calculate() {
@@ -111,8 +140,10 @@ function calculate() {
   generateDividedDifferenceTable(datas.x, datas.y, datas.x.length);
 
   //Generate the output table.
-  createTable(outputField, datas);
+  createTable(outputField, datas, rountTo);
 
   //Print the Lx.
   outputField.innerHTML += "<br> Lx = " + LXStringGenerator(datas, rountTo);
+
+  console.log(applyFormula(7, datas.x, datas.y, datas.x.length));
 }

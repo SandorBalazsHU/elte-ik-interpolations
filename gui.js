@@ -99,7 +99,7 @@ function createInputTable(tableDiv, tableData) {
  * @param {Data} tableData The datas for the table.
  * @param {int} rountTo The float rounding scale.
  */
-function createTable(tableDiv, tableData, rountTo) {
+function createTable(tableDiv, tableData) {
     var table = document.createElement('table');
     var tableBody = document.createElement('tbody');
   

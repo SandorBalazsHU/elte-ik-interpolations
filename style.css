@@ -1,4 +1,6 @@
 body {
+    margin:0;
+    padding:0;
     text-align: center;
     background-color: lightyellow; 
     font-family: Arial;
@@ -17,3 +19,10 @@ table {
   }
 
   td:nth-child(1) { background-color: lightslategrey; }
+
+  footer {
+    font-size: smaller;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }

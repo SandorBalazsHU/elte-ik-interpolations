@@ -26,7 +26,12 @@ var datas = {"x":[-2,-1,0,1,2], "y":[
 //Generate the input table.
 createInputTable(inputField, datas);
 
-//Fill the divided difference table.
+/**
+ * Fill the divided difference table.
+ * @param {Array<float>} x Array of x points.
+ * @param {Array<float>} y matrix of vaules.
+ * @param {Array<float>} n number of elements.
+ */
 function generateDividedDifferenceTable(x, y, n) { 
 	for (var i = 1; i < n; i++) { 
 		for (var j = 0; j < n - i; j++) { 
@@ -35,7 +40,10 @@ function generateDividedDifferenceTable(x, y, n) {
 	} 
 }
 
-//Read the input datas.
+/**
+ * Read the input datas.
+ * @param {Data} datas the datas object for the new datas.
+ */
 function updateDatasFromInputField(datas) {
   for (let i = 0; i < datas.x.length; i++) {
     var cell = document.querySelector('#inputX'+i);
@@ -48,7 +56,11 @@ function updateDatasFromInputField(datas) {
   }
 }
 
-//A correct round function.
+/**
+ * A correct round function.
+ * @param {float} num The roundable number.
+ * @param {int} scale The scale digit.
+ */
 function roundNumber(num, scale) {
   if(!("" + num).includes("e")) {
     return +(Math.round(num + "e+" + scale)  + "e-" + scale);
@@ -63,6 +75,11 @@ function roundNumber(num, scale) {
 }
 
 //Generating of the Lx string.
+/**
+ * 
+ * @param {Data} datas The datas for the LX generation.
+ * @param {int} rountTo The float rounding scale.
+ */
 function LXStringGenerator(datas, rountTo) {
   var Lx= "";
   for (var i = 0; i < datas.x.length; i++) {
@@ -80,11 +97,22 @@ function LXStringGenerator(datas, rountTo) {
   return Lx;
 }
 
-//The main caculation method. Call from the main button.
+/**
+ * The main caculation method. Call from the main button.
+ */
 function calculate() {
+  //Clean the output field.
   outputField.innerHTML = "";
+
+  //Read the datas
   updateDatasFromInputField(datas);
+
+  //Caculate
   generateDividedDifferenceTable(datas.x, datas.y, datas.x.length);
+
+  //Generate the output table.
   createTable(outputField, datas);
+
+  //Print the Lx.
   outputField.innerHTML += "<br> Lx = " + LXStringGenerator(datas, rountTo);
 }

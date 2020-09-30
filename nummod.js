@@ -1,19 +1,33 @@
-const calculate = document.querySelector("#calculate");
+/**
+ * Newton’s Divided Difference Interpolation Formula implementation.
+ * Created by Sándor Balázs
+ * AX400
+ */
+
+//The main calculate button and the eventlisener.
+const calculateButton = document.querySelector("#calculate");
+calculateButton.addEventListener("pointerdown", calculate);
+
+//The input and the autput fields.
 const inputField = document.querySelector("#inputField");
 const outputField = document.querySelector("#outputField");
+
+//rounding to 3 digit
 var rountTo = 3;
-var datas = {"x":[-2,-1,0,1,2],
-"y":[
+
+//The main data structure for the algorithm.
+var datas = {"x":[-2,-1,0,1,2], "y":[
 [-15,0,0,0,0],
 [-4, 0,0,0,0],
 [-1, 0,0,0,0],
 [ 0, 0,0,0,0],
-[ 5, 0,0,0,0]]
-};
+[ 5, 0,0,0,0]]};
 
-calculate.addEventListener("pointerdown", interpolation);
+//Generate the input table.
+createInputTable(inputField, datas);
 
-function dividedDiffTable(x, y, n) { 
+//Fill the divided difference table.
+function generateDividedDifferenceTable(x, y, n) { 
 	for (var i = 1; i < n; i++) { 
 		for (var j = 0; j < n - i; j++) { 
       y[j][i] = (y[j][i - 1] - y[j + 1] [i - 1]) / (x[j] - x[i + j]);
@@ -21,94 +35,7 @@ function dividedDiffTable(x, y, n) {
 	} 
 }
 
-function createInputTable(tableDiv, tableData) {
-  var table = document.createElement('table');
-  var tableBody = document.createElement('tbody');
-
-  var row = document.createElement('tr');
-  row.setAttribute('id', 'rowX');
-  var cell = document.createElement('td');
-  cell.appendChild(document.createTextNode("x:"));
-  row.appendChild(cell);
-
-  for (let i = 0; i < tableData.x.length; i++) {
-    var cell = document.createElement('td');
-    var input = document.createElement("input");
-    input.setAttribute('type', 'text');
-    input.setAttribute('id', 'inputX'+i);
-    input.setAttribute('size', '2');
-    input.setAttribute('value', tableData.x[i]);
-    cell.appendChild(input);
-    row.appendChild(cell);
-  }
-
-  cell = document.createElement('td');
-  var input = document.createElement("input");
-  input.setAttribute('type', 'button');
-  input.setAttribute('id', 'addColumn');
-  input.setAttribute('value', "+");
-  input.addEventListener("pointerdown", function() {
-    updateDatasFromInputField(datas);
-    datas.x.push(0);
-    datas.y.push(new Array(tableData.x.length).fill(0));
-    inputField.innerHTML="";
-    createInputTable(inputField, datas);
-  });
-  cell.appendChild(input);
-  row.appendChild(cell);
-
-  tableBody.appendChild(row);
-
-
-
-
-
-  var row = document.createElement('tr');
-  row.setAttribute('id', 'rowY');
-  var cell = document.createElement('td');
-  cell.appendChild(document.createTextNode("y:"));
-  row.appendChild(cell);
-
-  for (let i = 0; i < datas.x.length; i++) {
-    var cell = document.createElement('td');
-    var input = document.createElement("input");
-    input.setAttribute('type', 'text');
-    input.setAttribute('id', 'inputY'+i);
-    input.setAttribute('size', '2');
-    input.setAttribute('value', tableData.y[i][0]);
-    cell.appendChild(input);
-    row.appendChild(cell);
-  }
-
-  cell = document.createElement('td');
-  var input = document.createElement("input");
-  input.setAttribute('type', 'button');
-  input.setAttribute('id', 'removeColumn');
-  input.setAttribute('value', "-");
-  input.addEventListener("pointerdown", function() {
-    updateDatasFromInputField(datas);
-    datas.x.pop();
-    datas.y.pop();
-    inputField.innerHTML="";
-    createInputTable(inputField, datas);
-  });
-  cell.appendChild(input);
-  row.appendChild(cell);
-
-  tableBody.appendChild(row);
-
-
-
-
-  table.appendChild(tableBody);
-  tableDiv.appendChild(table);
-
-}
-createInputTable(inputField, datas);
-
-
-
-
+//Read the input datas.
 function updateDatasFromInputField(datas) {
   for (let i = 0; i < datas.x.length; i++) {
     var cell = document.querySelector('#inputX'+i);
@@ -121,7 +48,7 @@ function updateDatasFromInputField(datas) {
   }
 }
 
-
+//A correct round function.
 function roundNumber(num, scale) {
   if(!("" + num).includes("e")) {
     return +(Math.round(num + "e+" + scale)  + "e-" + scale);
@@ -135,53 +62,29 @@ function roundNumber(num, scale) {
   }
 }
 
-
-function createTable(tableDiv, tableData) {
-  var table = document.createElement('table');
-  var tableBody = document.createElement('tbody');
-
-  for (var i = 0; i < tableData.x.length; i++) {
-
-    var row = document.createElement('tr');
-
-    var cell = document.createElement('td');
-    cell.appendChild(document.createTextNode(roundNumber(tableData.x[i], rountTo)));
-    row.appendChild(cell);
-
-    tableData.y[i].forEach(function(cellData) {
-      var cell = document.createElement('td');
-      cell.appendChild(document.createTextNode(roundNumber(cellData, rountTo)));
-      row.appendChild(cell);
-    });
-
-    tableBody.appendChild(row);
-  };
-
-  table.appendChild(tableBody);
-  tableDiv.appendChild(table);
-}
-
-function interpolation() {
-  outputField.innerHTML = "";
-  updateDatasFromInputField(datas);
-  console.log(datas);
-  dividedDiffTable(datas.x, datas.y, datas.x.length);
-
-  var n = datas.x.length;
+//Generating of the Lx string.
+function LXStringGenerator(datas, rountTo) {
   var Lx= "";
-  for (var i = 0; i < n; i++) {
+  for (var i = 0; i < datas.x.length; i++) {
     Lx += roundNumber(datas.y[0][i], rountTo);
     if(i > 0) Lx += " * ";
     for (var j = 0; j < i; j++) {
       if(datas.x[j] >= 0) {
         Lx += "(x - " + roundNumber(datas.x[j], rountTo) + ")";
-      }else{
+      } else {
         Lx += "(x + " + Math.abs(roundNumber(datas.x[j], rountTo)) + ")";
       }
     }
-    if (i < n-1) Lx += " + ";
+    if (i < datas.x.length-1) Lx += " + ";
   }
+  return Lx;
+}
 
+//The main caculation method. Call from the main button.
+function calculate() {
+  outputField.innerHTML = "";
+  updateDatasFromInputField(datas);
+  generateDividedDifferenceTable(datas.x, datas.y, datas.x.length);
   createTable(outputField, datas);
-  outputField.innerHTML += "<br> Lx = " + Lx;
+  outputField.innerHTML += "<br> Lx = " + LXStringGenerator(datas, rountTo);
 }

@@ -1,28 +1,35 @@
+/**
+ * Newton’s Divided Difference Interpolation Formula implementation.
+ * Created by Sándor Balázs
+ * AX400
+ */
+
 body {
-    margin:0;
-    padding:0;
-    text-align: center;
-    background-color: lightyellow; 
-    font-family: Arial;
+margin:0;
+padding:0;
+text-align: center;
+background-color: lightyellow; 
+font-family: Arial;
 }
+
 table {
-    border-collapse: collapse;
-    margin-top: 30px;
-    margin-bottom: 20px;
-    margin-right: auto;
-    margin-left: auto;
-  }
-  
-  table, th, td {
-    border: 1px solid black;
-    padding: 5px;
-  }
+border-collapse: collapse;
+margin-top: 30px;
+margin-bottom: 20px;
+margin-right: auto;
+margin-left: auto;
+}
 
-  td:nth-child(1) { background-color: lightslategrey; }
+table, th, td {
+border: 1px solid black;
+padding: 5px;
+}
 
-  footer {
-    font-size: smaller;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-  }
+td:nth-child(1) { background-color: lightslategrey; }
+
+footer {
+font-size: smaller;
+position: absolute;
+bottom: 0;
+width: 100%;
+}

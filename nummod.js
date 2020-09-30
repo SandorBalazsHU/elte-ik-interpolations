@@ -9,7 +9,6 @@ var datas = {"x":[-2,-1,0,1,2],
 [ 0, 0,0,0,0],
 [ 5, 0,0,0,0]]
 };
-var numberOfDatas = 5;
 
 calculate.addEventListener("pointerdown", function() {
   interpolation();
@@ -23,7 +22,7 @@ function dividedDiffTable(x, y, n) {
 	} 
 }
 
-function createInputTable(tableDiv, tableData, numberOfDatas) {
+function createInputTable(tableDiv, tableData) {
   var table = document.createElement('table');
   var tableBody = document.createElement('tbody');
 
@@ -32,7 +31,7 @@ function createInputTable(tableDiv, tableData, numberOfDatas) {
   cell.appendChild(document.createTextNode("x:"));
   row.appendChild(cell);
 
-  for (let i = 0; i < numberOfDatas; i++) {
+  for (let i = 0; i < tableData.x.length; i++) {
     var cell = document.createElement('td');
     var input = document.createElement("input");
     input.setAttribute('type', 'text');
@@ -46,7 +45,14 @@ function createInputTable(tableDiv, tableData, numberOfDatas) {
   cell = document.createElement('td');
   var input = document.createElement("input");
   input.setAttribute('type', 'button');
+  input.setAttribute('id', 'addColumn');
   input.setAttribute('value', "+");
+  input.addEventListener("pointerdown", function() {
+    datas.x.push(0);
+    datas.y.push(new Array(tableData.x.length).fill(0));
+    inputField.innerHTML="";
+    createInputTable(inputField, datas);
+  });
   cell.appendChild(input);
   row.appendChild(cell);
 
@@ -61,7 +67,7 @@ function createInputTable(tableDiv, tableData, numberOfDatas) {
   cell.appendChild(document.createTextNode("y:"));
   row.appendChild(cell);
 
-  for (let i = 0; i < numberOfDatas; i++) {
+  for (let i = 0; i < datas.x.length; i++) {
     var cell = document.createElement('td');
     var input = document.createElement("input");
     input.setAttribute('type', 'text');
@@ -79,18 +85,22 @@ function createInputTable(tableDiv, tableData, numberOfDatas) {
 
   table.appendChild(tableBody);
   tableDiv.appendChild(table);
+
 }
-createInputTable(inputField, datas, numberOfDatas);
+createInputTable(inputField, datas);
 
 
 
 
-function updateDatasFromInputField(inputField, datas, numberOfDatas) {
-  for (let i = 0; i < numberOfDatas; i++) {
+function updateDatasFromInputField(datas) {
+  for (let i = 0; i < datas.x.length; i++) {
     var cell = document.querySelector('#inputX'+i);
-    datas.x[i] = cell.value;
+    datas.x[i] = parseInt(cell.value);
     cell = document.querySelector('#inputY'+i);
-    datas.y[i][0] = cell.value;
+    datas.y[i][0] = parseInt(cell.value);
+    for (let j = 1; j < datas.x.length; j++) {
+      datas.y[i][j] = 0;
+    }
   }
 }
 
@@ -98,11 +108,11 @@ function updateDatasFromInputField(inputField, datas, numberOfDatas) {
 
 
 
-function createTable(tableDiv, tableData, numberOfDatas) {
+function createTable(tableDiv, tableData) {
   var table = document.createElement('table');
   var tableBody = document.createElement('tbody');
 
-  for (var i = 0; i < numberOfDatas; i++) {
+  for (var i = 0; i < tableData.x.length; i++) {
 
     var row = document.createElement('tr');
 
@@ -125,8 +135,8 @@ function createTable(tableDiv, tableData, numberOfDatas) {
 
 function interpolation() {
   outputField.innerHTML = "";
-  updateDatasFromInputField(inputField, datas, numberOfDatas);
-
+  updateDatasFromInputField(datas);
+  console.log(datas);
   dividedDiffTable(datas.x, datas.y, datas.x.length);
 
   var n = datas.x.length;
@@ -144,6 +154,6 @@ function interpolation() {
     if (i < n-1) Lx += " + ";
   }
 
-  createTable(outputField, datas, numberOfDatas);
+  createTable(outputField, datas);
   outputField.innerHTML += "<br> Lx = " + Lx;
 }
